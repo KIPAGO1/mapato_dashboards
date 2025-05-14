@@ -6,4 +6,6 @@ datetime
 plotly.express
 plotly.subplots
 time
-pyplo
+matplotlib.pyplo
+git+https://github.com/ramonhagenaars/numerize.git
+
