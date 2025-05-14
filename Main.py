@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 #set page
 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 st.set_page_config(page_title="Mapato | Dashboard", page_icon="🌎", layout="wide")  
-st.subheader(f"📈 Kigoma Mapato Dashboard 🕒 {now}")
+st.subheader(f"📈 Buhigwe Mapato Dashboard 🕒 {now}")
 
 
 # load CSS Style
@@ -59,10 +59,12 @@ df_selection=df.query(
     "Region==@region & District==@district & Ward ==@ward & Date >= @start_str and Date <= @end_str"
 )
 
+
+
 #variables
-target=12646805000
-nonprotected=9000000000
-protected=3000000000
+target=1515838600
+nonprotected=1310727600
+protected=205111000
 
 target_perday=target/num_days
 
@@ -88,50 +90,204 @@ bilboards_collection = df_selection.query("SourceType == 'BILBOARDS'")['Amount']
 property_tax_collection = df_selection.query("SourceType == 'PROPERTY TAX'")['Amount'].sum()
 
 
-st.markdown("""
-    <style>
-        .border-box {
-            border: 3px solid #4CAF50;   /* Green border */
-            border-radius: 10px;         /* Rounded corners */
-            padding: 20px;               /* Space inside the border */
-            background-color: #f9f9f9;   /* Light background */
-            height: 100%;
-        }
-    </style>
+
+
+
+
+
+
+
+
+
+
+#-----PROGRESS BAR-----
+# Define at the top
+container,= st.columns(1)
+def ProgressBar():
+    target = 1515838600
+    collected = df_selection['Amount'].sum()
+    progress = collected / target
+
+    with container:
+        st.progress(progress)
+        st.markdown(f"""
+<div style="font-size: 20px; color: #1a73e8; font-weight: 600;">
+    Collected: {collected:,.0f} / Target: {target:,.0f} ({progress:.2%})
+</div>
 """, unsafe_allow_html=True)
+# def ProgressBartwo():
+#   st.markdown("""<style>.stProgress > div > div > div > div { background-image: linear-gradient(to right, #99ff99 , #FFFF00)}</style>""",unsafe_allow_html=True,)
+#   target=12646805000
+#   current=df_selection['Amount'].sum()
+#   percent=round((current/target*100))
+#   my_bar = st.progress(0)
+
+#   if percent>100:
+#     st.subheader("Congratulation Target 100 complited")
+#   else:
+#    st.write("You have ", percent, " % " ," of ", (format(target, ',d')), " TZS")
+#    for percent_complete in range(percent):
+#     time.sleep(0.1)
+#     my_bar.progress(percent_complete + 1,text="Target percentage")
 
 
 
 
 
 
-col4, col5, col6, = st.columns(3)
-with col4.container():
-    st.subheader("💰  **Overall 2024-2025**")
-    st.subheader(f"Target - {target:,}")
-    st.subheader(f"Collected - {overall_collected:,} - {overall_collected_percent}%")
 
 
-with col5.container():
-    st.markdown("###  💰  **Uprotected Collection**")
-    st.subheader(f"Target - {nonprotected:,}")
-    st.subheader(f"Collected - {nonprotected_collected:,} - {nonprotected_collected_percent}%")
 
 
-with col6.container():
-    st.markdown("### 💰 **Protected Collection**")
-    st.subheader(f"Target - {protected:,}")
-    st.subheader(f"Collected - {protected_collected:,} - {protected_collected_percent}%")
+
+
+
+
+
+
+def head_card(title, value,color):
+    st.markdown(f"""
+        <div style="
+            background-color: {color};
+            padding: 10px;
+            border-color: green;
+            border-radius: 15px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            font-family: 'Arial';
+        ">
+            <h4 style="color:white; margin-bottom: 5px;">{title}</h4>
+            <h2 style="color:white; margin: 0;">{value}</h2>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+
+
+
+col4, col5, col6= st.columns(3)
+with col4:
+    head_card(" 💰 OVERALL", f"TZS {overall_collected:,} - {overall_collected_percent}%", "#5409DA")
+with col5:
+    head_card(" 💰 UNPROTECTED", f"TZS {nonprotected_collected:,} - {nonprotected_collected_percent}%", "#309898")
+with col6:
+    head_card(" 💰 UNPROTECTED", f"TZS {protected_collected:,} - {protected_collected_percent}%", "#670D2F")
+
+
+st.markdown("&nbsp;", unsafe_allow_html=True)  # Adds vertical space
+
+
+
+
+
+
+
+
+
+
+
+#pie chat ya collected vs uncloocted na protected vs unproted na Wilayas
+div1, div2, div3=st.columns(3)
+
+def pieCollected():
+    with div1:  # or use `div1` if it's already defined
+        target_collection = 1515838600
+        collected = df_selection['Amount'].sum()
+        uncollected = target_collection - collected
+        labels = ['Collected', 'Uncollected']
+        collection = [collected, uncollected]
+        # Create a DataFrame for Plotly
+        pie_data = {
+            'Status': labels,
+            'Amount': collection
+        }
+        custom_colors = {
+            'Collected': '#00CC96',     # green
+            'Uncollected': '#EF553B'    # red/orange
+        }
+
+        fig = px.pie(
+            pie_data,
+            values='Amount',
+            names='Status',
+            hole=0.3,
+            color='Status',
+            color_discrete_map=custom_colors
+        )
+
+        fig.update_layout(
+            title_text="COLLECTED VS UNCOLLECTED",
+            title_x=0.2,
+            margin=dict(t=40, b=20, l=0, r=0),
+            showlegend=True
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+def pieProtected():
+    with div2:  # or use `div1` if it's already defined
+        target_collection = 1515838600
+        collected = df_selection['Amount'].sum()
+        uncollected = target_collection - collected
+        labels = ['Protected', 'Unprotected']
+        collection = [collected, uncollected]
+        # Create a DataFrame for Plotly
+        pie_data = {
+            'Status': labels,
+            'Amount': collection
+        }
+        custom_colors = {
+            'Protected': '#3A0519',     # green
+            'Unprotected': '#537D5D'    # red/orange
+        }
+
+        fig = px.pie(
+            pie_data,
+            values='Amount',
+            names='Status',
+            hole=0.0,
+            color='Status',
+            color_discrete_map=custom_colors
+        )
+
+        fig.update_layout(
+            title_text="PROTECTED VS UNPROTECTED",
+            title_x=0.2,
+            margin=dict(t=40, b=20, l=0, r=0),
+            showlegend=True
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+def barchartdistrictwise():
+    with div3:
+        grouped_df = df_selection.groupby('District', as_index=False)['Amount'].sum()
+
+        # Create bar chart
+        fig = px.bar(
+            grouped_df,
+            y='Amount',
+            x='District',
+            text_auto='.2s',
+            title="COLLECTION BY COUNCIL"
+        )
+
+        # Optional: center title and style
+        fig.update_layout(
+            title_x=0.2,
+            xaxis_title="Council",
+            yaxis_title="Total Amount Collected"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
 
 
 
 
 
 # Using the rounded subheader style
-
-
-
-
+st.subheader(f"💰 Collection by Main Source")
 
 def style_metric_card(title, value,color):
     st.markdown(f"""
@@ -147,7 +303,6 @@ def style_metric_card(title, value,color):
             <h2 style="color:white; margin: 0;">{value}</h2>
         </div>
     """, unsafe_allow_html=True)
-
 
 
 
@@ -177,63 +332,71 @@ with col7:
 
 st.markdown("&nbsp;", unsafe_allow_html=True)  # Adds vertical space
 
-#-----PROGRESS BAR-----
-def ProgressBar():
-  st.markdown("""<style>.stProgress > div > div > div > div { background-image: linear-gradient(to right, #99ff99 , #FFFF00)}</style>""",unsafe_allow_html=True,)
-  target=12646805000
-  current=df_selection['Amount'].sum()
-  percent=round((current/target*100))
-  my_bar = st.progress(0)
 
-  if percent>100:
-    st.subheader("Target 100 complited")
-  else:
-   st.write("you have ", percent, " % " ," of ", (format(target, ',d')), " TZS")
-   for percent_complete in range(percent):
-    time.sleep(0.1)
-    my_bar.progress(percent_complete + 1,text="Target percentage")
+# Create div
+col1, = st.columns(1)
 
-#create divs
-div1, div2, div3=st.columns(3)
-
+# Bar chart by Month
+def barchartByMonth():
+    with col1:
+        month_order = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ]
+        # Ensure Month column is ordered correctly
+        df_selection['Month'] = pd.Categorical(df_selection['Month'], categories=month_order, ordered=True)
+        grouped_df = df_selection.groupby('Month', as_index=False)['Amount'].sum()
+        # Create bar chart
+        fig = px.bar(
+            grouped_df,
+            y='Amount',
+            x='Month',
+            text_auto='.2s',
+            title="COLLECTION BY COUNCIL"
+        )
+        # Optional: center title and style
+        fig.update_layout(
+            title_x=0.2,
+            xaxis_title="Month",
+            yaxis_title="Amount Collected"
+        )
+        st.plotly_chart(fig, use_container_width=True)
 #pie chart
 
-# Sample data
-
-target_collection=12646805000
-collected=df_selection['Amount'].sum()
-uncollected=target_collection-collected
-
-labels = ['Collected', 'Uncolected']
-collection = [collected, uncollected]
-
-# Create pie chart
-fig, ax = plt.subplots()
-ax.pie(collection, labels=labels, autopct='%1.1f%%', startangle=90)
-ax.axis('equal')  # Equal aspect ratio ensures the pie is circular.
-
-st.pyplot(fig)
 
 
 st.markdown("&nbsp;", unsafe_allow_html=True)  # Adds vertical space
 
 
-def pie():
- with div1:
-  theme_plotly = None # None or streamlit
-  fig = px.pie(df_selection, values='Amount', names='Department', title='Collected vs Uncollected')
-  fig.update_layout(legend_title="Collection", legend_y=0.9)
-  fig.update_traces(textinfo='percent+label', textposition='inside')
-  st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-#bar chart by Month
 
-def barchart():
-  theme_plotly = None # None or streamlit
-  with div3:
-    fig = px.bar(df_selection, y='Amount', x='District', text_auto='.2s',title="Collection by Council")
-    fig.update_traces(textfont_size=18, textangle=0, textposition="outside", cliponaxis=False)
-    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+
+# Create div
+col1, = st.columns(1)
+# Bar chart by Month
+def barchartByWard():
+    with col1:
+        grouped_df = df_selection.groupby('Ward', as_index=False)['Amount'].sum()
+        grouped_df = grouped_df.sort_values('Ward')  # Sort by Ward name alphabetically
+        # Create bar chart
+        fig = px.bar(
+            grouped_df,
+            y='Amount',
+            x='Ward',
+            text_auto='.2s',
+            title="COLLECTION BY Ward"
+        )
+        # Optional: center title and style
+        fig.update_layout(
+            title_x=0.2,
+            xaxis_title="Ward",
+            yaxis_title="Amount Collected"
+        )
+        st.plotly_chart(fig, use_container_width=True)
+# Sample data
+
+
+
 
 
 
@@ -250,16 +413,17 @@ with st.sidebar:
         menu_icon="cast", #option
         default_index=0, #option
         orientation="vertical",
-
-
-
         )
  
 
 if selected=="Home":
     ProgressBar()
-    pie()
-    barchart()
+    pieProtected()
+    pieCollected()
+    barchartdistrictwise()
+    barchartByMonth()
+    barchartByWard()
+
 
 
 if selected=="Table":
