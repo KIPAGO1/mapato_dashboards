@@ -2,3 +2,8 @@ streamlit
 pandas
 plotly
 numerize
+datetime
+plotly.express
+plotly.subplots
+time
+pyplo
