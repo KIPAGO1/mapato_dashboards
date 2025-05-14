@@ -1,7 +1,11 @@
 import streamlit as st
 import pandas as pd 
 from numerize.numerize import numerize
-
+from datetime import datetime
+import plotly.express as px
+import plotly.subplots as sp
+import time
+import matplotlib.pyplot as plt
 
 #set page
 now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
