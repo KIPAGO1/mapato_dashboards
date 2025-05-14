@@ -100,20 +100,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Define columns
-col1, col2 = st.columns(2)
 
-# Use HTML to apply a border inside col1
-with col1:
-    st.markdown('<div class="border-box">', unsafe_allow_html=True)
-    st.subheader("Bordered Column")
-    st.write("This content is inside a bordered container.")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# Plain content in col2
-with col2:
-    st.subheader("Regular Column")
-    st.write("This column has no border.")
 
 
 
@@ -273,7 +260,6 @@ if selected=="Home":
     ProgressBar()
     pie()
     barchart()
-    barchartDistrictwise()
 
 
 if selected=="Table":
