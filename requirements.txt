@@ -1,7 +1,1 @@
-streamlit
-pandas
-openpyxl
-xlsxwriter
-reportlab
-matplotlib
-numerizes
+XlsxWriter
