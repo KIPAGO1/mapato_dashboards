@@ -5,3 +5,7 @@ numerize
 matplotlib
 openpyxl
 streamlit_option_menu
+xlsxwriter
+reportlab
+check_password_hash
+werkzeug
