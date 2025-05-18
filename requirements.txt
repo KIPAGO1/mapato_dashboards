@@ -1,7 +1,8 @@
-numerize
-plotly
-matplotlib
+streamlit
+pandas
 openpyxl
 xlsxwriter
+plotly
+numpy
+matplotlib
 reportlab
-check_password_hash
