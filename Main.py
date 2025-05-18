@@ -11,8 +11,6 @@ import xlsxwriter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 from pathlib import Path
-import json
-from login import login
 
 #set page
 now = datetime.now().strftime("%Y-%m-%d      %H:%M:%S")
