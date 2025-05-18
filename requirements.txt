@@ -2,3 +2,4 @@ numerize
 plotly
 matplotlib
 openpyxl
+xlsxwriter
