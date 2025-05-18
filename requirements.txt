@@ -1,8 +1,10 @@
 streamlit
 pandas
-openpyxl
-xlsxwriter
+numerize
+datetime
 plotly
-numpy
 matplotlib
+xlsxwriter
 reportlab
+Path
+SimpleDocTemplate
