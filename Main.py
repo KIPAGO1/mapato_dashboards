@@ -8,7 +8,6 @@ import time
 import matplotlib.pyplot as plt
 import io
 import xlsxwriter
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 
 #set page
