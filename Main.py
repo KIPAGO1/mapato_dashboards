@@ -8,6 +8,9 @@ import matplotlib.pyplot as plt
 import io
 import xlsxwriter
 from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib import colors
+from pathlib import Path
 
 #set page
 now = datetime.now().strftime("%Y-%m-%d      %H:%M:%S")
