@@ -11,7 +11,6 @@ import xlsxwriter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 from pathlib import Path
-from werkzeug.security import check_password_hash
 import json
 from login import login
 
