@@ -7,4 +7,3 @@ matplotlib
 xlsxwriter
 reportlab
 Path
-SimpleDocTemplate
