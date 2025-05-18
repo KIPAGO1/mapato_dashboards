@@ -11,6 +11,9 @@ import xlsxwriter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 from pathlib import Path
+from werkzeug.security import check_password_hash
+import json
+from login import login
 
 #set page
 now = datetime.now().strftime("%Y-%m-%d      %H:%M:%S")
@@ -545,15 +548,22 @@ with col11:
 with col12:
     st.download_button("📥 Excel", data=to_excel(pivot_df),
                        file_name="collection_summary.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       key="edownload_excel_button"  # 🔑 Unique key
+                       )
+
 with col13:
     st.download_button("📄 PDF", data=to_pdf(pivot_df),
                        file_name="collection_summary.pdf",
-                       mime="application/pdf")
+                       mime="application/pdf",
+                       key="edownload_pdf_button"  # 🔑 Unique key
+                       )
 with col14:
     st.download_button("🖼️ PNG", data=to_png(pivot_df),
                        file_name="collection_summary.png",
-                       mime="image/png")
+                       mime="image/png",
+                       key="edownload_png_button"  # 🔑 Unique key
+                       )
     # Display table
 st.dataframe(pivot_df, use_container_width=True)
 
@@ -631,15 +641,21 @@ with col11:
 with col12:
     st.download_button("📥 Excel", data=to_excel(pivot_df),
                        file_name="collection_summary.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       key="adownload_excel_button"  # 🔑 Unique key
+                       )
 with col13:
     st.download_button("📄 PDF", data=to_pdf(pivot_df),
                        file_name="collection_summary.pdf",
-                       mime="application/pdf")
+                       mime="application/pdf",
+                       key="adownload_pdf_button"  # 🔑 Unique key
+                       )
 with col14:
     st.download_button("🖼️ PNG", data=to_png(pivot_df),
                        file_name="collection_summary.png",
-                       mime="image/png")
+                       mime="image/png",
+                       key="adownload_png_button"  # 🔑 Unique key
+                       )
     # Display table
 st.dataframe(pivot_df, use_container_width=True)
 #***********************************END District by MAIN-SOURCE*********************
@@ -691,15 +707,21 @@ with col11:
 with col12:
     st.download_button("📥 Excel", data=to_excel(top_items_df),
                        file_name="top_ten_items_by_Pos.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       key="bdownload_excel_button"  # 🔑 Unique key
+                       )
 with col13:
     st.download_button("📄 PDF", data=to_pdf(top_items_df),
                        file_name="top_ten_items_by_Pos.pdf",
-                       mime="application/pdf")
+                       mime="application/pdf",
+                       key="bdownload_pdf_button"  # 🔑 Unique key
+                       )
 with col14:
     st.download_button("🖼️ PNG", data=to_png(top_items_df),
                        file_name="top_ten_items_by_Pos.png",
-                       mime="image/png")
+                       mime="image/png",
+                       key="bdownload_png_button"  # 🔑 Unique key
+                       )
     # Display table
 st.dataframe(top_items_df, use_container_width=True)
 
@@ -743,15 +765,21 @@ with col111:
 with col121:
     st.download_button("📥 Excel", data=to_excel(all_pos_df),
                        file_name="Pos_Collection.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       key="cdownload_excel_button"  # 🔑 Unique key
+                       )
 with col131:
     st.download_button("📄 PDF", data=to_pdf(all_pos_df),
                        file_name="Pos_Collection.pdf",
-                       mime="application/pdf")
+                       mime="application/pdf",
+                       key="cdownload_pdf_button"  # 🔑 Unique key
+                       )
 with col141:
     st.download_button("🖼️ PNG", data=to_png(all_pos_df),
                        file_name="Pos_Collection.png",
-                       mime="image/png")
+                       mime="image/png",
+                       key="cdownload_png_button"  # 🔑 Unique key
+                       )
     # Display table
 st.dataframe(all_pos_df, use_container_width=True)
 
@@ -798,15 +826,21 @@ with col111:
 with col121:
     st.download_button("📥 Excel", data=to_excel(top_collector_df),
                        file_name="top_ten_Collector_by_Pos.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       key="ddownload_excel_button"  # 🔑 Unique key
+                       )
 with col131:
     st.download_button("📄 PDF", data=to_pdf(top_collector_df),
                        file_name="top_ten_Collector_by_Pos.pdf",
-                       mime="application/pdf")
+                       mime="application/pdf",
+                       key="ddownload_pdf_button"  # 🔑 Unique key
+                       )
 with col141:
     st.download_button("🖼️ PNG", data=to_png(top_collector_df),
                        file_name="top_ten_Collector_by_Pos.png",
-                       mime="image/png")
+                       mime="image/png",
+                       key="ddownload_png_button"  # 🔑 Unique key
+                       )
     # Display table
 st.dataframe(top_collector_df, use_container_width=True)
 
@@ -853,15 +887,21 @@ with col111:
 with col121:
     st.download_button("📥 Excel", data=to_excel(all_collector_df),
                        file_name="Collector_by_Pos.xlsx",
-                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                       mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                       key="fdownload_excel_button"  # 🔑 Unique key
+                       )
 with col131:
     st.download_button("📄 PDF", data=to_pdf(all_collector_df),
                        file_name="Collector_by_Pos.pdf",
-                       mime="application/pdf")
+                       mime="application/pdf",
+                       key="fdownload_pdf_button"  # 🔑 Unique key
+                       )
 with col141:
     st.download_button("🖼️ PNG", data=to_png(all_collector_df),
                        file_name="Collector_by_Pos.png",
-                       mime="image/png")
+                       mime="image/png",
+                       key="fdownload_png_button"  # 🔑 Unique key
+                       )
     # Display table
 st.dataframe(all_collector_df, use_container_width=True)
 
