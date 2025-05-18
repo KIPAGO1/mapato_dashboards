@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd 
-from numerize.numerize import numerize
+import numerize
 from datetime import datetime
 import plotly.express as px
 import plotly.subplots as sp
